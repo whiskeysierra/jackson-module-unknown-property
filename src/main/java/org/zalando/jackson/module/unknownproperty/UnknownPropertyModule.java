@@ -21,11 +21,10 @@ package org.zalando.jackson.module.unknownproperty;
  */
 
 import com.fasterxml.jackson.core.Version;
+import com.fasterxml.jackson.core.util.VersionUtil;
 import com.fasterxml.jackson.databind.Module;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import static com.fasterxml.jackson.core.util.VersionUtil.mavenVersionFor;
 
 public final class UnknownPropertyModule extends Module {
 
@@ -57,9 +56,10 @@ public final class UnknownPropertyModule extends Module {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public Version version() {
         final ClassLoader loader = UnknownPropertyModule.class.getClassLoader();
-        return mavenVersionFor(loader, "org.zalando", "jackson-module-unknown-property");
+        return VersionUtil.mavenVersionFor(loader, "org.zalando", "jackson-module-unknown-property");
     }
 
     @Override

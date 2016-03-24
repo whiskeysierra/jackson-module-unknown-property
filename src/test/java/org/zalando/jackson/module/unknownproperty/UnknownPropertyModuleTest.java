@@ -22,6 +22,7 @@ package org.zalando.jackson.module.unknownproperty;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.Module;
@@ -35,6 +36,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
+import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertThat;
@@ -55,7 +57,7 @@ public final class UnknownPropertyModuleTest {
         final Logger logger = mock(Logger.class);
         final ObjectMapper mapper = register(logger);
 
-        mapper.readValue(from("sample.json"), Known.class);
+        mapper.readValue(sample(), Known.class);
 
         verifyNoMoreInteractions(logger);
     }
@@ -66,12 +68,36 @@ public final class UnknownPropertyModuleTest {
         final ObjectMapper mapper = register(logger);
 
         try {
-            mapper.readValue(from("sample.json"), Unknown.class);
+            mapper.readValue(sample(), Unknown.class);
         } finally {
             verify(logger).trace("Unknown property in {}: {}", Unknown.class, "property");
         }
     }
+    
+    @Test(expected = JsonMappingException.class)
+    public void shouldLogPartiallyIgnoredUnknownProperty() throws IOException {
+        final Logger logger = mock(Logger.class);
+        final ObjectMapper mapper = register(logger);
 
+        try {
+            mapper.readValue(sample(), PartiallyIgnored.class);
+        } finally {
+            verify(logger).trace("Unknown property in {}: {}", PartiallyIgnored.class, "property");
+        }
+    }
+
+    @Test
+    public void shouldLogUnknownPropertyEvenIfFailOnUnknownPropertiesIsGloballyDisabled() throws IOException {
+        final Logger logger = mock(Logger.class);
+        final ObjectMapper mapper = register(logger).disable(FAIL_ON_UNKNOWN_PROPERTIES);
+
+        try {
+            mapper.readValue(sample(), Unknown.class);
+        } finally {
+            verify(logger).trace("Unknown property in {}: {}", Unknown.class, "property");
+        }
+    }
+    
     @Test
     public void shouldNotLogHandledUnknownProperty() throws IOException {
         final Logger logger = mock(Logger.class);
@@ -87,7 +113,7 @@ public final class UnknownPropertyModuleTest {
                     }
                 });
 
-        mapper.readValue(from("sample.json"), Unknown.class);
+        mapper.readValue(sample(), Unknown.class);
 
         verifyNoMoreInteractions(logger);
     }
@@ -100,7 +126,7 @@ public final class UnknownPropertyModuleTest {
                         "Well this is odd... somebody changed {} and added '{}'"));
 
         try {
-            mapper.readValue(from("sample.json"), Unknown.class);
+            mapper.readValue(sample(), Unknown.class);
         } finally {
             verify(logger).trace("Well this is odd... somebody changed {} and added '{}'", Unknown.class, "property");
         }
@@ -111,7 +137,7 @@ public final class UnknownPropertyModuleTest {
         final Logger logger = mock(Logger.class);
         final ObjectMapper mapper = register(logger);
 
-        mapper.readValue(from("sample.json"), Ignored.class);
+        mapper.readValue(sample(), Ignored.class);
 
         verifyNoMoreInteractions(logger);
     }
@@ -121,7 +147,7 @@ public final class UnknownPropertyModuleTest {
         final Logger logger = mock(Logger.class);
         final ObjectMapper mapper = register(logger);
 
-        mapper.readValue(from("sample.json"), IgnoredUnknown.class);
+        mapper.readValue(sample(), IgnoredUnknown.class);
 
         verifyNoMoreInteractions(logger);
     }
@@ -129,6 +155,10 @@ public final class UnknownPropertyModuleTest {
     private ObjectMapper register(Logger logger) {
         return new ObjectMapper()
                 .registerModule(new UnknownPropertyModule(logger));
+    }
+
+    private static URL sample() {
+        return from("sample.json");
     }
 
     private static URL from(String resourceName) {

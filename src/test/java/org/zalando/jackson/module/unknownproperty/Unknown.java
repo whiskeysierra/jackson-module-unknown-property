@@ -20,6 +20,6 @@ package org.zalando.jackson.module.unknownproperty;
  * ​⁣
  */
 
-public final class Unknown {
+final class Unknown {
 
 }

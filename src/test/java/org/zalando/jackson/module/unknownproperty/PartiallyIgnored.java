@@ -20,16 +20,9 @@ package org.zalando.jackson.module.unknownproperty;
  * ​⁣
  */
 
-final class Known {
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-    private String property;
-
-    public String getProperty() {
-        return property;
-    }
-
-    public void setProperty(final String property) {
-        this.property = property;
-    }
+@JsonIgnoreProperties("ignored")
+final class PartiallyIgnored {
 
 }

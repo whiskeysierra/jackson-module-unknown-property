@@ -5,18 +5,20 @@
 [![Release](https://img.shields.io/github/release/zalando/jackson-module-unknown-property.svg)](https://github.com/zalando/jackson-module-unknown-property/releases)
 [![Maven Central](https://img.shields.io/maven-central/v/org.zalando/jackson-module-unknown-property.svg)](https://maven-badges.herokuapp.com/maven-central/org.zalando/jackson-module-unknown-property)
 
-*Jackson Module Unknown Property* is a [Jackson](https://github.com/codehaus/jackson) extension module that adds 
-standardized logging of unknown properties.
+*Unknown Property* is a [Jackson](https://github.com/codehaus/jackson) extension module that adds standardized logging 
+of unknown properties.
 
-RESTful API clients/consumers should be resilient to changes, most importantly they shouldn't break when a server sends
+Consumers of RESTful APIs should be resilient to changes, most importantly they shouldn't break when a server sends
 a new, unknown property. The goal of this module is to let clients know that a new property exists, so they can decide
-to either ignore it explicitely or to use it, in case it's useful for them.
+to either ignore it explicitly or to use it, in case it proves to be useful.
 
 ## Features
+
 - log new, unknown properties in JSON messages as soon as they appear
 - increases awareness of API changes on consumer side
 
 ## Dependencies
+
 - Java 8
 - Any build tool using Maven Central, or direct download
 - Jackson
@@ -50,6 +52,17 @@ ObjectMapper mapper = new ObjectMapper()
     .findAndRegisterModules();
 ```
 
+Typically you will disable the `FAIL_ON_UNKNOWN_PROPERTIES` feature, as it contradicts the whole idea of being a
+resilient API client:
+
+```java
+ObjectMapper mapper = new ObjectMapper()
+    .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+    .registerModule(new UnknownPropertyModule());
+```
+
+### Customization
+
 The logging category defaults to `org.zalando.jackson.module.unknownproperty.UnknownPropertyModule` but can be
 customized by passing a logger: 
 
@@ -65,9 +78,8 @@ ObjectMapper mapper = new ObjectMapper()
     .registerModule(new UnknownPropertyModule("Well this is odd... somebody changed {} and added '{}'"));
 ```
 
-Please note that the first parameter is the type and the second one is the property name.
-
-The log level is `TRACE` and as for now it's not configurable.
+Please note that the first parameter is the type and the second one is the property name. The log level is `TRACE` and
+as of now it's not configurable.
 
 ## Usage
 
@@ -93,6 +105,15 @@ public class Person {
 
 ```
 2016-03-24T09:33:13 [thread-1] TRACE o.z.j.m.u.UnknownPropertyModule - Unknown property in class Person: age
+```
+
+To suppress the warning you just explicitly ignore the property:
+
+```java
+@JsonIgnoreProperties("age")
+public class Person {
+    ...
+}
 ```
 
 ## Getting help
