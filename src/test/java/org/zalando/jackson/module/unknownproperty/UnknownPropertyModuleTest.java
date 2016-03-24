@@ -51,7 +51,7 @@ public final class UnknownPropertyModuleTest {
         final Logger logger = mock(Logger.class);
         final ObjectMapper mapper = register(logger);
         
-        mapper.readValue(sample(), Known.class);
+        mapper.readValue(from("sample.json"), Known.class);
         
         verifyNoMoreInteractions(logger);
     }
@@ -62,31 +62,18 @@ public final class UnknownPropertyModuleTest {
         final ObjectMapper mapper = register(logger);
 
         try {
-            mapper.readValue(sample(), Unknown.class);
+            mapper.readValue(from("sample.json"), Unknown.class);
         } finally {
             verify(logger).trace("Unknown property in {}: {}", Unknown.class, "property");
         }
     }
 
-    // TODO this is not working as expected, i.e. it will still instatiate the class
-    @Test(expected = JsonMappingException.class)
-    public void shouldLogUnknownPropertyWhenUsingCreator() throws IOException {
-        final Logger logger = mock(Logger.class);
-        final ObjectMapper mapper = register(logger);
-
-        try {
-            mapper.readValue(sample(), UnknownCreator.class);
-        } finally {
-            verify(logger).trace("Unknown property in {}: {}", UnknownCreator.class, "property");
-        }
-    }
-    
     @Test
     public void shouldNotLogIgnoredProperty() throws IOException {
         final Logger logger = mock(Logger.class);
         final ObjectMapper mapper = register(logger);
         
-        mapper.readValue(sample(), Ignored.class);
+        mapper.readValue(from("sample.json"), Ignored.class);
         
         verifyNoMoreInteractions(logger);
     }
@@ -96,7 +83,7 @@ public final class UnknownPropertyModuleTest {
         final Logger logger = mock(Logger.class);
         final ObjectMapper mapper = register(logger);
         
-        mapper.readValue(sample(), IgnoredUnknown.class);
+        mapper.readValue(from("sample.json"), IgnoredUnknown.class);
         
         verifyNoMoreInteractions(logger);
     }
@@ -108,8 +95,8 @@ public final class UnknownPropertyModuleTest {
                 .registerModule(new UnknownPropertyModule(logger));
     }
     
-    private URL sample() {
-        return Resources.getResource("sample.json");
+    private static URL from(String resourceName) {
+        return Resources.getResource(resourceName);
     }
 
 }

@@ -22,4 +22,14 @@ package org.zalando.jackson.module.unknownproperty;
 
 public final class Unknown {
 
+    private String unused;
+
+    public String getUnused() {
+        return unused;
+    }
+
+    public void setUnused(String unused) {
+        this.unused = unused;
+    }
+
 }
