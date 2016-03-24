@@ -8,16 +8,13 @@
 *Jackson Module Unknown Property* is a [Jackson](https://github.com/codehaus/jackson) extension module that adds 
 standardized logging of unknown properties.
 
-The maintainers of Jackson Module build APIs, so you might notice that this project reflects an API design
-point of view. In developing our work, we sought a reusable library that would enable us to express monetary amounts
-in JSON while reflecting our API preferences. We couldn't find one, so we created one. 
+RESTful API clients/consumers should be resilient to changes, most importantly they shouldn't break when a server sends
+a new, unknown property. The goal of this module is to let clients know that a new property exists, so they can decide
+to either ignore it explicitely or to use it, in case it's useful for them.
 
 ## Features
-- enables you to express monetary amounts in JSON
-- can be used in a REST APIs
-- offers customizable serialization by locale
-- allows you to implement RESTful API endpoints that format monetary amounts based on the Accept-Language header
-- is unique and flexible
+- log new, unknown properties in JSON messages as soon as they appear
+- increases awareness of API changes on consumer side
 
 ## Dependencies
 - Java 8
