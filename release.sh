@@ -5,8 +5,7 @@ set -e
 mvn scm:check-local-modification
 
 # test
-mvn dependency:tree clean test -Pjdk7,-jdk8
-mvn dependency:tree clean test -Pjdk8,-jdk7
+mvn clean test
 
 # release
 mvn versions:set
