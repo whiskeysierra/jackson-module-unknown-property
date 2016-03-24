@@ -104,7 +104,7 @@ public class Person {
 ... then, depending on the underlying logging framework, the entry in the logfile may look like this:
 
 ```
-2016-03-24T09:33:13 [thread-1] TRACE o.z.j.m.u.UnknownPropertyModule - Unknown property in class Person: age
+2016-03-24T09:33:13 [main] TRACE UnknownPropertyModule - Unknown property in class Person: age
 ```
 
 To suppress the warning you just explicitly ignore the property:
