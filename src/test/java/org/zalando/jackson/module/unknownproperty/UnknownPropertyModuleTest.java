@@ -20,9 +20,13 @@ package org.zalando.jackson.module.unknownproperty;
  * ​⁣
  */
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.deser.DeserializationProblemHandler;
 import com.google.common.io.Resources;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -39,7 +43,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 public final class UnknownPropertyModuleTest {
-    
+
     @Test
     public void shouldSupportSpi() {
         final List<Module> modules = ObjectMapper.findModules();
@@ -50,9 +54,9 @@ public final class UnknownPropertyModuleTest {
     public void shouldNotLogKnownProperty() throws IOException {
         final Logger logger = mock(Logger.class);
         final ObjectMapper mapper = register(logger);
-        
+
         mapper.readValue(from("sample.json"), Known.class);
-        
+
         verifyNoMoreInteractions(logger);
     }
 
@@ -69,12 +73,46 @@ public final class UnknownPropertyModuleTest {
     }
 
     @Test
+    public void shouldNotLogHandledUnknownProperty() throws IOException {
+        final Logger logger = mock(Logger.class);
+        final ObjectMapper mapper = new ObjectMapper()
+                .registerModule(new UnknownPropertyModule(logger))
+                // handlers are added to the beginning rather than the end, although this is undocumented
+                .addHandler(new DeserializationProblemHandler() {
+                    @Override
+                    public boolean handleUnknownProperty(final DeserializationContext context, final JsonParser parser,
+                            final JsonDeserializer<?> deserializer, final Object beanOrClass,
+                            final String propertyName) {
+                        return true;
+                    }
+                });
+
+        mapper.readValue(from("sample.json"), Unknown.class);
+
+        verifyNoMoreInteractions(logger);
+    }
+    
+    @Test(expected = JsonMappingException.class)
+    public void shouldLogUnknownPropertyWithCustomFormat() throws IOException {
+        final Logger logger = mock(Logger.class);
+        final ObjectMapper mapper = new ObjectMapper()
+                .registerModule(new UnknownPropertyModule(logger, 
+                        "Well this is odd... somebody changed {} and added '{}'"));
+
+        try {
+            mapper.readValue(from("sample.json"), Unknown.class);
+        } finally {
+            verify(logger).trace("Well this is odd... somebody changed {} and added '{}'", Unknown.class, "property");
+        }
+    }
+
+    @Test
     public void shouldNotLogIgnoredProperty() throws IOException {
         final Logger logger = mock(Logger.class);
         final ObjectMapper mapper = register(logger);
-        
+
         mapper.readValue(from("sample.json"), Ignored.class);
-        
+
         verifyNoMoreInteractions(logger);
     }
 
@@ -82,19 +120,17 @@ public final class UnknownPropertyModuleTest {
     public void shouldNotLogIgnoredUnknownProperty() throws IOException {
         final Logger logger = mock(Logger.class);
         final ObjectMapper mapper = register(logger);
-        
+
         mapper.readValue(from("sample.json"), IgnoredUnknown.class);
-        
+
         verifyNoMoreInteractions(logger);
     }
-    
-    // TODO multiple handlers, one of which returns true
 
     private ObjectMapper register(Logger logger) {
         return new ObjectMapper()
                 .registerModule(new UnknownPropertyModule(logger));
     }
-    
+
     private static URL from(String resourceName) {
         return Resources.getResource(resourceName);
     }

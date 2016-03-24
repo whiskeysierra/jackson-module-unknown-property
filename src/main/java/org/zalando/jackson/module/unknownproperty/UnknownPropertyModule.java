@@ -29,14 +29,26 @@ import static com.fasterxml.jackson.core.util.VersionUtil.mavenVersionFor;
 
 public final class UnknownPropertyModule extends Module {
 
+    private static final Logger LOG = LoggerFactory.getLogger(UnknownPropertyModule.class);
+
     private final Logger logger;
+    private final String format;
 
     public UnknownPropertyModule() {
-        this(LoggerFactory.getLogger(UnknownPropertyModule.class));
+        this(LOG);
     }
 
     public UnknownPropertyModule(final Logger logger) {
+        this(logger, "Unknown property in {}: {}");
+    }
+    
+    public UnknownPropertyModule(final String format) {
+        this(LOG, format);
+    }
+
+    public UnknownPropertyModule(final Logger logger, final String format) {
         this.logger = logger;
+        this.format = format;
     }
 
     @Override
@@ -52,7 +64,7 @@ public final class UnknownPropertyModule extends Module {
 
     @Override
     public void setupModule(final SetupContext context) {
-        context.addDeserializationProblemHandler(new UnknownPropertyDeserializationProblemHandler(logger));
+        context.addDeserializationProblemHandler(new UnknownPropertyDeserializationProblemHandler(logger, format));
     }
 
 }
