@@ -71,7 +71,7 @@ ObjectMapper mapper = new ObjectMapper()
     .registerModule(new UnknownPropertyModule(LoggerFactory.getLogger("unknown-property")));
 ```
 
-The logging format defaults to `Unknown property in class {}: {}` but can also be customized by passing overriding it:
+The logging format defaults to `Unknown property in {}: {}` but can also be customized:
 
 ```java
 ObjectMapper mapper = new ObjectMapper()
