@@ -61,6 +61,9 @@ ObjectMapper mapper = new ObjectMapper()
     .registerModule(new UnknownPropertyModule());
 ```
 
+**Beware** this module is implemented as a `DeserializationProblemHandler`. If you register multiple handlers they
+are running in reverse order, i.e. the handler that is registered last will run first.
+
 ### Customization
 
 The logging category defaults to `org.zalando.jackson.module.unknownproperty.UnknownPropertyModule` but can be

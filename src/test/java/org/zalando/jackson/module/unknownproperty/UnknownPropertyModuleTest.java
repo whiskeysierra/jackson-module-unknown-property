@@ -22,7 +22,6 @@ package org.zalando.jackson.module.unknownproperty;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.Module;
@@ -73,7 +72,7 @@ public final class UnknownPropertyModuleTest {
             verify(logger).trace("Unknown property in {}: {}", Unknown.class, "property");
         }
     }
-    
+
     @Test(expected = JsonMappingException.class)
     public void shouldLogPartiallyIgnoredUnknownProperty() throws IOException {
         final Logger logger = mock(Logger.class);
@@ -91,38 +90,63 @@ public final class UnknownPropertyModuleTest {
         final Logger logger = mock(Logger.class);
         final ObjectMapper mapper = register(logger).disable(FAIL_ON_UNKNOWN_PROPERTIES);
 
-        try {
-            mapper.readValue(sample(), Unknown.class);
-        } finally {
-            verify(logger).trace("Unknown property in {}: {}", Unknown.class, "property");
-        }
+        mapper.readValue(sample(), Unknown.class);
+        verify(logger).trace("Unknown property in {}: {}", Unknown.class, "property");
     }
-    
+
     @Test
     public void shouldNotLogHandledUnknownProperty() throws IOException {
         final Logger logger = mock(Logger.class);
         final ObjectMapper mapper = new ObjectMapper()
                 .registerModule(new UnknownPropertyModule(logger))
-                // handlers are added to the beginning rather than the end, although this is undocumented
-                .addHandler(new DeserializationProblemHandler() {
-                    @Override
-                    public boolean handleUnknownProperty(final DeserializationContext context, final JsonParser parser,
-                            final JsonDeserializer<?> deserializer, final Object beanOrClass,
-                            final String propertyName) {
-                        return true;
-                    }
-                });
+                .addHandler(alwaysRepondWith(true));
 
         mapper.readValue(sample(), Unknown.class);
 
         verifyNoMoreInteractions(logger);
     }
-    
+
+    @Test(expected = JsonMappingException.class)
+    public void shouldLogPreviouslyUnhandledUnknownProperty() throws IOException {
+        final Logger logger = mock(Logger.class);
+        final ObjectMapper mapper = new ObjectMapper()
+                .registerModule(new UnknownPropertyModule(logger))
+                .addHandler(alwaysRepondWith(false));
+
+        try {
+            mapper.readValue(sample(), PartiallyIgnored.class);
+        } finally {
+            verify(logger).trace("Unknown property in {}: {}", PartiallyIgnored.class, "property");
+        }
+    }
+
+    @Test
+    public void shouldLogUnhandledPropertyAsFirstHandler() throws IOException {
+        final Logger logger = mock(Logger.class);
+        final ObjectMapper mapper = new ObjectMapper()
+                .addHandler(alwaysRepondWith(true))
+                .registerModule(new UnknownPropertyModule(logger));
+
+        mapper.readValue(sample(), PartiallyIgnored.class);
+        verify(logger).trace("Unknown property in {}: {}", PartiallyIgnored.class, "property");
+    }
+
+    private DeserializationProblemHandler alwaysRepondWith(final boolean value) {
+        return new DeserializationProblemHandler() {
+            @Override
+            public boolean handleUnknownProperty(final DeserializationContext context, final JsonParser parser,
+                    final JsonDeserializer<?> deserializer, final Object beanOrClass,
+                    final String propertyName) {
+                return value;
+            }
+        };
+    }
+
     @Test(expected = JsonMappingException.class)
     public void shouldLogUnknownPropertyWithCustomFormat() throws IOException {
         final Logger logger = mock(Logger.class);
         final ObjectMapper mapper = new ObjectMapper()
-                .registerModule(new UnknownPropertyModule(logger, 
+                .registerModule(new UnknownPropertyModule(logger,
                         "Well this is odd... somebody changed {} and added '{}'"));
 
         try {
