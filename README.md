@@ -1,7 +1,7 @@
 # Jackson Module Unknown Property
 
-[![Build Status](https://img.shields.io/travis/zalando/jackson-module-unknown-property.svg)](https://travis-ci.org/zalando/jackson-module-unknown-property)
-[![Coverage Status](https://img.shields.io/coveralls/zalando/jackson-module-unknown-property.svg)](https://coveralls.io/r/zalando/jackson-module-unknown-property)
+[![Build Status](https://img.shields.io/travis/zalando/jackson-module-unknown-property/master.svg)](https://travis-ci.org/zalando/jackson-module-unknown-property)
+[![Coverage Status](https://img.shields.io/coveralls/zalando/jackson-module-unknown-property/master.svg)](https://coveralls.io/r/zalando/jackson-module-unknown-property)
 [![Javadoc](https://javadoc-emblem.rhcloud.com/doc/org.zalando/jackson-module-unknown-property/badge.svg)](http://www.javadoc.io/doc/org.zalando/jackson-module-unknown-property)
 [![Release](https://img.shields.io/github/release/zalando/jackson-module-unknown-property.svg)](https://github.com/zalando/jackson-module-unknown-property/releases)
 [![Maven Central](https://img.shields.io/maven-central/v/org.zalando/jackson-module-unknown-property.svg)](https://maven-badges.herokuapp.com/maven-central/org.zalando/jackson-module-unknown-property)
