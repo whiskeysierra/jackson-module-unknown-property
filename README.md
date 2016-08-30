@@ -5,6 +5,7 @@
 [![Javadoc](https://javadoc-emblem.rhcloud.com/doc/org.zalando/jackson-module-unknown-property/badge.svg)](http://www.javadoc.io/doc/org.zalando/jackson-module-unknown-property)
 [![Release](https://img.shields.io/github/release/zalando/jackson-module-unknown-property.svg)](https://github.com/zalando/jackson-module-unknown-property/releases)
 [![Maven Central](https://img.shields.io/maven-central/v/org.zalando/jackson-module-unknown-property.svg)](https://maven-badges.herokuapp.com/maven-central/org.zalando/jackson-module-unknown-property)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/zalando/jackson-module-unknown-property/master/LICENSE)
 
 *Unknown Property* is a [Jackson](https://github.com/codehaus/jackson) extension module that adds standardized logging 
 of unknown properties.
