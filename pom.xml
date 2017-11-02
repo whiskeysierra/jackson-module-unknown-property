@@ -14,7 +14,7 @@
 
     <name>Jackson-module-Unknown-Property</name>
     <description>Jackson extension module that adds standardized logging of unknown properties.</description>
-    <url>https://github.com/zalando/jackson-module-unknown-property</url>
+    <url>https://github.com/whiskeysierra/jackson-module-unknown-property</url>
 
     <organization>
         <name>Zalando SE</name>
@@ -40,9 +40,9 @@
     </developers>
 
     <scm>
-        <url>https://github.com/zalando/jackson-module-unknown-property</url>
-        <connection>scm:git:git@github.com:zalando/jackson-module-unknown-property.git</connection>
-        <developerConnection>scm:git:git@github.com:zalando/jackson-module-unknown-property.git</developerConnection>
+        <url>https://github.com/whiskeysierra/jackson-module-unknown-property</url>
+        <connection>scm:git:git@github.com:whiskeysierra/jackson-module-unknown-property.git</connection>
+        <developerConnection>scm:git:git@github.com:whiskeysierra/jackson-module-unknown-property.git</developerConnection>
     </scm>
 
     <properties>
