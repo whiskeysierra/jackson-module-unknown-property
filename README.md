@@ -2,6 +2,7 @@
 
 [![Build Status](https://img.shields.io/travis/whiskeysierra/jackson-module-unknown-property/master.svg)](https://travis-ci.org/whiskeysierra/jackson-module-unknown-property)
 [![Coverage Status](https://img.shields.io/coveralls/whiskeysierra/jackson-module-unknown-property/master.svg)](https://coveralls.io/r/whiskeysierra/jackson-module-unknown-property)
+[![Code Quality](https://img.shields.io/codacy/grade/4ba764808bae4a81bead924eaacb829e/master.svg)](https://www.codacy.com/app/whiskeysierra/jackson-module-unknown-property)
 [![Javadoc](http://javadoc.io/badge/org.zalando/jackson-module-unknown-property.svg)](http://www.javadoc.io/doc/org.zalando/jackson-module-unknown-property)
 [![Release](https://img.shields.io/github/release/whiskeysierra/jackson-module-unknown-property.svg)](https://github.com/whiskeysierra/jackson-module-unknown-property/releases)
 [![Maven Central](https://img.shields.io/maven-central/v/org.zalando/jackson-module-unknown-property.svg)](https://maven-badges.herokuapp.com/maven-central/org.zalando/jackson-module-unknown-property)
