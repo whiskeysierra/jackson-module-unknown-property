@@ -4,10 +4,6 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <prerequisites>
-        <maven>3.0.4</maven>
-    </prerequisites>
-
     <groupId>org.zalando</groupId>
     <artifactId>jackson-module-unknown-property</artifactId>
     <version>0.2.0-SNAPSHOT</version>
@@ -109,6 +105,41 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.0.0-M2</version>
+                <executions>
+                    <execution>
+                        <id>enforce-maven</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireMavenVersion>
+                                    <version>3.5.0</version>
+                                </requireMavenVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.owasp</groupId>
+                <artifactId>dependency-check-maven</artifactId>
+                <version>3.2.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <failBuildOnAnyVulnerability>true</failBuildOnAnyVulnerability>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.basepom.maven</groupId>
                 <artifactId>duplicate-finder-maven-plugin</artifactId>
@@ -212,14 +243,6 @@
                 <version>2.5</version>
                 <configuration>
                     <generateBackupPoms>false</generateBackupPoms>
-                </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-scm-plugin</artifactId>
-                <version>1.9.4</version>
-                <configuration>
-                    <pushChanges>false</pushChanges>
-                    <tag>${project.version}</tag>
                 </configuration>
             </plugin>
         </plugins>
