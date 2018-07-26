@@ -84,8 +84,14 @@ ObjectMapper mapper = new ObjectMapper()
     .registerModule(new UnknownPropertyModule("Well this is odd... somebody changed {} and added '{}'"));
 ```
 
-Please note that the first parameter is the type and the second one is the property name. The log level is `TRACE` and
-as of now it's not configurable.
+Please note that the first parameter is the type and the second one is the property name.
+
+The log level defaults to `TRACE` but can also be customized:
+
+```java
+ObjectMapper mapper = new ObjectMapper()
+    .registerModule(new UnknownPropertyModule(Level.INFO));
+```
 
 ## Usage
 
