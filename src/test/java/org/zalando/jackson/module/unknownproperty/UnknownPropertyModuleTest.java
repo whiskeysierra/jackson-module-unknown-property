@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.deser.DeserializationProblemHandler;
 import com.google.common.io.Resources;
 import org.junit.Test;
 import org.slf4j.Logger;
+import org.slf4j.event.Level;
 
 import java.io.IOException;
 import java.net.URL;
@@ -109,6 +110,50 @@ public final class UnknownPropertyModuleTest {
 
         mapper.readValue(sample(), PartiallyIgnored.class);
         verify(logger).trace("Unknown property in {}: {}", PartiallyIgnored.class, "property");
+    }
+
+    @Test
+    public void shouldRespectErrorLogLevel() throws IOException {
+        final Logger logger = mock(Logger.class);
+        final ObjectMapper mapper = new ObjectMapper()
+                .disable(FAIL_ON_UNKNOWN_PROPERTIES)
+                .registerModule(new UnknownPropertyModule(logger).withLogLevel(Level.ERROR));
+
+        mapper.readValue(sample(), PartiallyIgnored.class);
+        verify(logger).error("Unknown property in {}: {}", PartiallyIgnored.class, "property");
+    }
+
+    @Test
+    public void shouldRespectWarnLogLevel() throws IOException {
+        final Logger logger = mock(Logger.class);
+        final ObjectMapper mapper = new ObjectMapper()
+                .disable(FAIL_ON_UNKNOWN_PROPERTIES)
+                .registerModule(new UnknownPropertyModule(logger).withLogLevel(Level.WARN));
+
+        mapper.readValue(sample(), PartiallyIgnored.class);
+        verify(logger).warn("Unknown property in {}: {}", PartiallyIgnored.class, "property");
+    }
+
+    @Test
+    public void shouldRespectDebugLogLevel() throws IOException {
+        final Logger logger = mock(Logger.class);
+        final ObjectMapper mapper = new ObjectMapper()
+                .disable(FAIL_ON_UNKNOWN_PROPERTIES)
+                .registerModule(new UnknownPropertyModule(logger).withLogLevel(Level.DEBUG));
+
+        mapper.readValue(sample(), PartiallyIgnored.class);
+        verify(logger).debug("Unknown property in {}: {}", PartiallyIgnored.class, "property");
+    }
+
+    @Test
+    public void shouldRespectInfoLogLevel() throws IOException {
+        final Logger logger = mock(Logger.class);
+        final ObjectMapper mapper = new ObjectMapper()
+                .disable(FAIL_ON_UNKNOWN_PROPERTIES)
+                .registerModule(new UnknownPropertyModule(logger).withLogLevel(Level.INFO));
+
+        mapper.readValue(sample(), PartiallyIgnored.class);
+        verify(logger).info("Unknown property in {}: {}", PartiallyIgnored.class, "property");
     }
 
     private DeserializationProblemHandler alwaysRepondWith(final boolean value) {
