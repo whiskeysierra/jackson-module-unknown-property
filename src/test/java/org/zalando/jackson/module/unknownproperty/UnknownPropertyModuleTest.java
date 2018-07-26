@@ -113,6 +113,17 @@ public final class UnknownPropertyModuleTest {
     }
 
     @Test
+    public void shouldRespectErrorLogLevel() throws IOException {
+        final Logger logger = mock(Logger.class);
+        final ObjectMapper mapper = new ObjectMapper()
+                .disable(FAIL_ON_UNKNOWN_PROPERTIES)
+                .registerModule(new UnknownPropertyModule(logger).withLogLevel(Level.ERROR));
+
+        mapper.readValue(sample(), PartiallyIgnored.class);
+        verify(logger).error("Unknown property in {}: {}", PartiallyIgnored.class, "property");
+    }
+
+    @Test
     public void shouldRespectWarnLogLevel() throws IOException {
         final Logger logger = mock(Logger.class);
         final ObjectMapper mapper = new ObjectMapper()
