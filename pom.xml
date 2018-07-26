@@ -6,7 +6,7 @@
 
     <groupId>org.zalando</groupId>
     <artifactId>jackson-module-unknown-property</artifactId>
-    <version>0.2.0-SNAPSHOT</version>
+    <version>0.2.0</version>
 
     <name>Jackson-module-Unknown-Property</name>
     <description>Jackson extension module that adds standardized logging of unknown properties.</description>
