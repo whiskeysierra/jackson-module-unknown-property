@@ -21,7 +21,7 @@ final class UnknownPropertyDeserializationProblemHandler extends Deserialization
 
     @Override
     public boolean handleUnknownProperty(final DeserializationContext context, final JsonParser parser,
-                                         final JsonDeserializer<?> deserializer, final Object beanOrClass, final String propertyName) {
+            final JsonDeserializer<?> deserializer, final Object beanOrClass, final String propertyName) {
 
         // TODO based on the documentation this could be a class already, but I couldn't figure out when this happens
         final Class<?> type = beanOrClass.getClass();

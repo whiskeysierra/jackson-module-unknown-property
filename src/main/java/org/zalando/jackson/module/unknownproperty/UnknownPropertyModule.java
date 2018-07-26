@@ -10,7 +10,6 @@ import org.slf4j.event.Level;
 public final class UnknownPropertyModule extends Module {
 
     private static final Logger LOG = LoggerFactory.getLogger(UnknownPropertyModule.class);
-    private static final Level LOG_LEVEL = Level.TRACE;
 
     private final Logger logger;
     private final Level logLevel;
@@ -21,29 +20,25 @@ public final class UnknownPropertyModule extends Module {
     }
 
     public UnknownPropertyModule(final Logger logger) {
-        this(logger, LOG_LEVEL);
-    }
-
-    public UnknownPropertyModule(final Level logLevel) {
-        this(LOG, logLevel);
+        this(logger, "Unknown property in {}: {}");
     }
 
     public UnknownPropertyModule(final String format) {
-        this(LOG, LOG_LEVEL, format);
-    }
-
-    public UnknownPropertyModule(final Logger logger, final Level logLevel) {
-        this(logger, logLevel, "Unknown property in {}: {}");
+        this(LOG, format);
     }
 
     public UnknownPropertyModule(final Logger logger, final String format) {
-        this(logger, LOG_LEVEL, format);
+        this(logger, Level.TRACE, format);
     }
 
-    public UnknownPropertyModule(final Logger logger, final Level logLevel, final String format) {
+    private UnknownPropertyModule(final Logger logger, final Level logLevel, final String format) {
         this.logger = logger;
         this.logLevel = logLevel;
         this.format = format;
+    }
+
+    public UnknownPropertyModule withLogLevel(final Level logLevel) {
+        return new UnknownPropertyModule(logger, logLevel, format);
     }
 
     @Override

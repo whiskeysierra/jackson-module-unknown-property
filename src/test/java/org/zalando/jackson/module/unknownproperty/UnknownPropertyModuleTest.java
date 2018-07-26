@@ -113,11 +113,33 @@ public final class UnknownPropertyModuleTest {
     }
 
     @Test
-    public void shouldRespectLogLevel() throws IOException {
+    public void shouldRespectWarnLogLevel() throws IOException {
         final Logger logger = mock(Logger.class);
         final ObjectMapper mapper = new ObjectMapper()
                 .disable(FAIL_ON_UNKNOWN_PROPERTIES)
-                .registerModule(new UnknownPropertyModule(logger, Level.INFO));
+                .registerModule(new UnknownPropertyModule(logger).withLogLevel(Level.WARN));
+
+        mapper.readValue(sample(), PartiallyIgnored.class);
+        verify(logger).warn("Unknown property in {}: {}", PartiallyIgnored.class, "property");
+    }
+
+    @Test
+    public void shouldRespectDebugLogLevel() throws IOException {
+        final Logger logger = mock(Logger.class);
+        final ObjectMapper mapper = new ObjectMapper()
+                .disable(FAIL_ON_UNKNOWN_PROPERTIES)
+                .registerModule(new UnknownPropertyModule(logger).withLogLevel(Level.DEBUG));
+
+        mapper.readValue(sample(), PartiallyIgnored.class);
+        verify(logger).debug("Unknown property in {}: {}", PartiallyIgnored.class, "property");
+    }
+
+    @Test
+    public void shouldRespectInfoLogLevel() throws IOException {
+        final Logger logger = mock(Logger.class);
+        final ObjectMapper mapper = new ObjectMapper()
+                .disable(FAIL_ON_UNKNOWN_PROPERTIES)
+                .registerModule(new UnknownPropertyModule(logger).withLogLevel(Level.INFO));
 
         mapper.readValue(sample(), PartiallyIgnored.class);
         verify(logger).info("Unknown property in {}: {}", PartiallyIgnored.class, "property");
