@@ -1,23 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>org.zalando</groupId>
     <artifactId>jackson-module-unknown-property</artifactId>
     <version>0.3.0-SNAPSHOT</version>
-
     <name>Jackson-module-Unknown-Property</name>
     <description>Jackson extension module that adds standardized logging of unknown properties.</description>
     <url>https://github.com/whiskeysierra/jackson-module-unknown-property</url>
-
+    <inceptionYear>2015</inceptionYear>
     <organization>
         <name>Zalando SE</name>
     </organization>
-
-    <inceptionYear>2015</inceptionYear>
-
     <licenses>
         <license>
             <name>MIT License</name>
@@ -25,7 +18,6 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
-
     <developers>
         <developer>
             <name>Willi Schönborn</name>
@@ -34,13 +26,21 @@
             <organizationUrl>https://tech.zalando.com/</organizationUrl>
         </developer>
     </developers>
-
     <scm>
         <url>https://github.com/whiskeysierra/jackson-module-unknown-property</url>
         <connection>scm:git:git@github.com:whiskeysierra/jackson-module-unknown-property.git</connection>
         <developerConnection>scm:git:git@github.com:whiskeysierra/jackson-module-unknown-property.git</developerConnection>
     </scm>
-
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -48,7 +48,6 @@
         <jackson.version>2.9.6</jackson.version>
         <slf4j.version>1.7.25</slf4j.version>
     </properties>
-
     <dependencies>
         <dependency>
             <groupId>com.google.gag</groupId>
@@ -103,7 +102,6 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
@@ -248,18 +246,6 @@
             </plugin>
         </plugins>
     </build>
-
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
-
     <profiles>
         <profile>
             <id>release</id>
@@ -320,5 +306,4 @@
             </build>
         </profile>
     </profiles>
-
 </project>
