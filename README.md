@@ -1,6 +1,6 @@
 # Jackson Module Unknown Property
 
-[![Stability: Maintenance](https://masterminds.github.io/stability/maintenance.svg)](https://masterminds.github.io/stability/maintenance.html)
+[![Stability: Unsupported](https://masterminds.github.io/stability/unsupported.svg)](https://masterminds.github.io/stability/unsupported.html)
 [![Build Status](https://img.shields.io/travis/whiskeysierra/jackson-module-unknown-property/master.svg)](https://travis-ci.org/whiskeysierra/jackson-module-unknown-property)
 [![Coverage Status](https://img.shields.io/coveralls/whiskeysierra/jackson-module-unknown-property/master.svg)](https://coveralls.io/r/whiskeysierra/jackson-module-unknown-property)
 [![Code Quality](https://img.shields.io/codacy/grade/4ba764808bae4a81bead924eaacb829e/master.svg)](https://www.codacy.com/app/whiskeysierra/jackson-module-unknown-property)
